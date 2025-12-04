@@ -11,6 +11,22 @@
     - Firefox
         - settings -> network settings -> Automatic proxy configuration URL -> указать там путь для `routing.pac`
         - включить чекбокс "Proxy DNS when using SOCKS v5"
+    - Bash (в пределах сессии, подходит также для wsl)
+        - ```
+          export ALL_PROXY="socks5://127.0.0.1:10808"
+          export HTTP_PROXY="socks5://127.0.0.1:10808"
+          export HTTPS_PROXY="socks5://127.0.0.1:10808"
+          ```
+    - Powershell (в пределах сессии)
+        - ```
+          setx HTTP_PROXY  "socks5://127.0.0.1:10808"
+          setx HTTPS_PROXY "socks5://127.0.0.1:10808"
+          setx ALL_PROXY   "socks5://127.0.0.1:10808"
+          ```
+    - JetBrains
+        - File → Settings → System Settings → HTTP Proxy
+        - Manual proxy configuration, HTTP: 127.0.0.1, Port: 3129 
 6. Проверить, что нет утечек (не должно быть местных серверов)
     - https://browserleaks.com/dns
     - https://ipleak.net
+7. Проверить IP адреса, например на 2ip.io и 2ip.ru
