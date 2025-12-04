@@ -1,0 +1,5 @@
+.env
+.env.ru
+config.json
+config-main.json
+config-ru.json

@@ -1,0 +1,22 @@
+services:
+  singbox-main:
+    build: .
+    container_name: singbox-main
+    env_file: .env        # main profile env vars
+    ports:
+      - "10808:10808"     # SOCKS main
+      - "3129:3129"       # HTTP
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
+
+  singbox-ru:
+    build: .
+    container_name: singbox-ru
+    env_file: .env.ru     # different upstream
+    ports:
+      - "10809:10808"     # SOCKS main
+      - "3130:3129"       # HTTP
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped

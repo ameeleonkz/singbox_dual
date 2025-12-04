@@ -1,0 +1,82 @@
+{
+  "log": {
+    "level": "info",
+    "timestamp": true
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "cloudflare",
+        "address": "https://1.1.1.1/dns-query",
+        "strategy": "ipv4_only"
+      }
+    ],
+    "rules": [
+      {
+        "outbound": "proxy",
+        "server": "cloudflare"
+      }
+    ],
+    "final": "cloudflare"
+  },
+  "inbounds": [
+    {
+      "type": "socks",
+      "tag": "socks-in",
+      "listen": "0.0.0.0",
+      "listen_port": 10808,
+      "sniff": true
+    },
+    {
+      "type": "http",
+      "tag": "http-in",
+      "listen": "0.0.0.0",
+      "listen_port": 3129,
+      "sniff": true,
+      "set_system_proxy": false
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "vless",
+      "tag": "proxy",
+      "server": "${SINGBOX_SERVER_ADDRESS}",
+      "server_port": ${SINGBOX_SERVER_PORT},
+      "uuid": "${SINGBOX_UUID}",
+      "flow": "",
+      "tls": {
+        "enabled": true,
+        "server_name": "${SINGBOX_SNI}",
+        "utls": {
+          "enabled": true
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "${SINGBOX_PUBLIC_KEY}",
+          "short_id": "${SINGBOX_SHORT_ID}"
+        }
+      }
+    },
+    {
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "block",
+      "tag": "block"
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "inbound": ["socks-in", "http-in"],
+        "outbound": "proxy"
+      },
+      {
+        "protocol": "dns",
+        "outbound": "proxy"
+      }
+    ],
+    "auto_detect_interface": true
+  }
+}
